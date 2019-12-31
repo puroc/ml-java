@@ -35,4 +35,16 @@ public class DataUtils {
         }
         return output;
     }
+
+    public static double avg(Queue<Double> queue) {
+        return sum(queue) / queue.size();
+    }
+
+    public static double sum(Queue<Double> queue) {
+        Double sum = 0d;
+        for (Double d : queue) {
+            sum += d;
+        }
+        return sum ;
+    }
 }

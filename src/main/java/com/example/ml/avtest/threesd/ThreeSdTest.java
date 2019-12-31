@@ -1,6 +1,5 @@
 package com.example.ml.avtest.threesd;
 
-import com.example.ml.avtest.ar.SimpleMovingAverage;
 import com.example.ml.common.DataUtils;
 import com.example.ml.common.FileUtils;
 import com.example.ml.common.MathUtils;
@@ -12,8 +11,9 @@ import java.util.Queue;
 public class ThreeSdTest {
 
     //基于去重之后的数据的正确样本数量
-    public static final int RIGHT_NUM = 100;
-    public static final String FILE_PRIMITIVE_DATA = "/Users/puroc/git/ml-java/src/main/resources/threesd/20191111.csv";
+    public static final int RIGHT_NUM = 933;
+    public static final String FILE_PRIMITIVE_DATA = "/Users/puroc/git/ml-java/src/main/resources/threesd/data.csv";
+//    public static final String FILE_PRIMITIVE_DATA = "/Users/puroc/git/ml-java/src/main/resources/threesd/20191111.csv";
     public static final String FILE_OUT_DATA = "/Users/puroc/git/ml-java/src/main/resources/threesd/out.csv";
     public static final String FILE_DISDINCT_DATA = "/Users/puroc/git/ml-java/src/main/resources/threesd/distinct.csv";
 
@@ -44,7 +44,7 @@ public class ThreeSdTest {
 
             // 先对样本数据做差分，再计算3倍标准差
             Queue<Double> diffRightData = DataUtils.diff(rightData);
-            double avg = SimpleMovingAverage.avg(diffRightData);
+            double avg = DataUtils.avg(diffRightData);
             double max = avg + 3 * MathUtils.sd(diffRightData);
 
             //将样本数据放入输出的队列中

@@ -50,4 +50,8 @@ public class FileUtils {
         }
         return queue;
     }
+
+    public static void main(String[] args) {
+        FileUtils.readFile("/Users/puroc/git/ml-java/src/main/resources/ar/20191112.csv");
+    }
 }
