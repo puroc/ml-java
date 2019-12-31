@@ -8,15 +8,13 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.atomic.AtomicLong;
 
-
 /**
- * 一次差分后计算移动平均值
+ * 二次差分后计算移动平均值
  * */
-public class ArTest {
-
+public class ArTest2 {
     public static final int RIGHT_NUM = 933;
     public static final String FILE_PRIMITIVE_DATA = "/Users/puroc/git/ml-java/src/main/resources/ar/data.csv";
-//    public static final String FILE_PRIMITIVE_DATA = "/Users/puroc/git/ml-java/src/main/resources/ar/20191111.csv";
+    //    public static final String FILE_PRIMITIVE_DATA = "/Users/puroc/git/ml-java/src/main/resources/ar/20191111.csv";
     public static final String FILE_DISTINCT_DATA = "/Users/puroc/git/ml-java/src/main/resources/ar/distinct.csv";
     public static final String FILE_OUT_DATA = "/Users/puroc/git/ml-java/src/main/resources/ar/out.csv";
 
@@ -48,7 +46,8 @@ public class ArTest {
             double ar = 0d;
             double sde = 0d;
             double max = 0d;
-            double last = 0d;
+            double last1 = 0d;
+            double last2 = 0d;
 
             for (double x : data) {
 
@@ -58,8 +57,8 @@ public class ArTest {
                 //当前值的序号大于窗口长度时才开始进行异常值检测
                 if (currentNum > windowSize) {
 
-                    //计算出当前数据与上一条数据的差
-                    double diff = x - last;
+                    //计算出当前数据的二阶差分值
+                    double diff = (x - last1) - (last1 - last2);
 
                     //x是当前值，max是当前值的预测最大值，若x大于max则认为是异常值
                     if (diff > max) {
@@ -75,8 +74,8 @@ public class ArTest {
 
                 //当达到窗口长度时，开始对下一个差分值进行预测
                 if (currentNum >= windowSize) {
-                    //将窗口中的数据进行差分，得到一个差分后的队列
-                    Queue<Double> diffQueue = DataUtils.diff(windowQueue.getQueue());
+                    //将窗口中的数据进行二阶差分，得到一个差分后的队列
+                    Queue<Double> diffQueue = DataUtils.diff(DataUtils.diff(windowQueue.getQueue()));
 
                     //将窗口差分队列中的数据拷贝到移动平均算法中
                     SimpleMovingAverage sma = new SimpleMovingAverage(windowSize);
@@ -85,15 +84,18 @@ public class ArTest {
                     //计算窗口差分队列中数据的平均值
                     ar = sma.getMovingAverage();
 
-                    //计算窗口差分队列中数据的标准误差
+                    //计算窗口差分队列中数据的标准差
                     sde = sma.getSde();
 
-                    //预测下一个差分值的数值上限
+                    //预测下一个二阶差分值的数值上限
                     max = ar + sde;
                 }
 
-                //将当前值赋值给last，用于跟下一个数据做差
-                last = x;
+                //将last1赋值给last2
+                last2 = last1;
+
+                //将当前值赋值给last1，用于跟下一个数据做差
+                last1 = x;
             }
 
             FileUtils.writeFile(outDataQueue, new File(FILE_OUT_DATA));
@@ -101,6 +103,4 @@ public class ArTest {
             e.printStackTrace();
         }
     }
-
-
 }
