@@ -1,4 +1,4 @@
-package com.example.ml.ar;
+package com.example.ml.avtest.ar;
 /**
  * SimpleMovingAverage
  * 使用队列实现POJO移动平均

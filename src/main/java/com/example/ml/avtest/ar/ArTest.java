@@ -1,4 +1,4 @@
-package com.example.ml.ar;
+package com.example.ml.avtest.ar;
 
 import java.io.*;
 import java.util.LinkedList;
@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class ArTest {
 
-    public static final int RIGHT_NUM = 1000;
+    public static final int RIGHT_NUM = 100;
 
     public static void main(String[] args) {
         try {
@@ -107,11 +107,12 @@ public class ArTest {
         BufferedReader bufferedReader = null;
         Queue<Double> queue = new LinkedList<Double>();
         try {
-            FileReader fileReader = new FileReader("/Users/puroc/git/ml-java/src/main/resources/ar/a.csv");
+//            FileReader fileReader = new FileReader("/Users/puroc/git/ml-java/src/main/resources/ar/a.csv");
+            FileReader fileReader = new FileReader("/Users/puroc/git/ml-java/src/main/resources/ar/20191111.csv");
             bufferedReader = new BufferedReader(fileReader);
             String line = bufferedReader.readLine();
             while (line != null) {
-                double ce = Double.parseDouble(line.split(",")[0]);
+                double ce = Double.parseDouble(line.split(",")[1]);
                 queue.add(ce);
                 line = bufferedReader.readLine();
             }
